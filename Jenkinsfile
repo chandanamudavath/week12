@@ -2,23 +2,28 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON = 'C:\\Users\\Chandana\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe'
+        DOCKER_IMAGE = 'mudavathchandana/sample2026:seleniumtestimage'
+    }
+
     stages {
 
         stage('Run Selenium Tests with pytest') {
             steps {
                 echo 'Running Selenium Tests using pytest'
 
-                bat 'python --version'
-                bat 'python -m pip install -r requirements.txt'
+                bat '"%PYTHON%" --version'
+                bat '"%PYTHON%" -m pip install -r requirements.txt'
 
-                // Start Flask app in background
-                bat 'start /B python app.py > app.log 2>&1'
+                // Start Flask application
+                bat 'start "FlaskApp" /B "%PYTHON%" app.py'
 
                 // Wait for Flask to start
                 bat 'ping 127.0.0.1 -n 6 > nul'
 
                 // Run Selenium tests
-                bat 'python -m pytest -v'
+                bat '"%PYTHON%" -m pytest -v'
             }
         }
 
@@ -47,8 +52,8 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                bat 'docker tag seleniumdemoapp:v1 mudavathchandana/sample2026:seleniumtestimage'
-                bat 'docker push mudavathchandana/sample2026:seleniumtestimage'
+                bat 'docker tag seleniumdemoapp:v1 %DOCKER_IMAGE%'
+                bat 'docker push %DOCKER_IMAGE%'
             }
         }
 
@@ -66,7 +71,7 @@ pipeline {
         }
 
         failure {
-            echo 'Pipeline failed. Please check the Console Output.'
+            echo 'Pipeline failed. Check the Jenkins Console Output.'
         }
     }
 }

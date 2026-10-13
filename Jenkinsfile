@@ -24,7 +24,8 @@ pipeline {
                 bat 'ping 127.0.0.1 -n 6 > nul'
 
                 // Run Selenium tests
-                bat '"%PYTHON%" -m pytest -v'
+                bat 'dir tests'
+                bat '"%PYTHON%" -m pytest tests/ -v'
             }
         }
 

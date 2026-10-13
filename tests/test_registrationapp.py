@@ -20,7 +20,8 @@ def setup_teardown():
         service=Service(ChromeDriverManager().install()),
         options=options
     )
+def test_registration_page(setup_teardown):
+    driver = setup_teardown
+    driver.get("http://127.0.0.1:5000/")
 
-    driver.maximize_window()
-    yield driver
-    driver.quit()
+    assert driver.title == "Registration Form"

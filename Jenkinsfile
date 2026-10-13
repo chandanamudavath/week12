@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        PYTHON = 'C:\\Users\\Chandana\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe'
+        PYTHON = 'C:\\Users\\Chandana\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
         DOCKER_IMAGE = 'mudavathchandana/sample2026:seleniumtestimage'
     }
 
@@ -14,6 +14,7 @@ pipeline {
                 echo 'Running Selenium Tests using pytest'
 
                 bat '"%PYTHON%" --version'
+                bat '"%PYTHON%" -m pip --version'
                 bat '"%PYTHON%" -m pip install -r requirements.txt'
 
                 // Start Flask application
@@ -69,7 +70,6 @@ pipeline {
         success {
             echo 'Pipeline completed successfully!'
         }
-
         failure {
             echo 'Pipeline failed. Check the Jenkins Console Output.'
         }
